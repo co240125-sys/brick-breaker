@@ -1,11 +1,12 @@
-import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
+import javax.swing.*;
+import javax.swing.Timer;
 
-class BrickBreaker extends JFrame {
+public class BrickBreaker extends JFrame {
 
-    class GameBoard extends JPanel implements ActionListener, KeyListener {
+    final class GameBoard extends JPanel implements ActionListener, KeyListener {
 
         abstract class GameObject {
             int x, y, width, height;
@@ -20,10 +21,9 @@ class BrickBreaker extends JFrame {
             Rectangle getBounds() {
                 return new Rectangle(x, y, width, height);
             }
-
-            abstract void draw(Graphics g);
         }
-         class Paddle extends GameObject {
+
+        class Paddle extends GameObject {
             int speed = 8;
 
             Paddle(int x, int y) {
@@ -40,7 +40,6 @@ class BrickBreaker extends JFrame {
                 if (x + width > boardWidth) x = boardWidth - width;
             }
 
-            @Override
             void draw(Graphics g) {
                 g.setColor(Color.WHITE);
                 g.fillRect(x, y, width, height);
@@ -60,26 +59,25 @@ class BrickBreaker extends JFrame {
                 y += dy;
             }
 
-            @Override
             void draw(Graphics g) {
                 g.setColor(Color.WHITE);
                 g.fillOval(x, y, width, height);
             }
         }
-          class Brick extends GameObject {
+
+        class Brick extends GameObject {
             boolean destroyed = false;
             Color color;
 
             Brick(int x, int y) {
                 super(x, y, 60, 20);
                 color = new Color(
-                        (int)(Math.random() * 255),
-                        (int)(Math.random() * 255),
-                        (int)(Math.random() * 255)
+                    (int)(Math.random() * 255),
+                    (int)(Math.random() * 255),
+                    (int)(Math.random() * 255)
                 );
             }
 
-            @Override
             void draw(Graphics g) {
                 if (!destroyed) {
                     g.setColor(color);
@@ -94,7 +92,7 @@ class BrickBreaker extends JFrame {
         Timer timer;
         boolean running = true;
         String message = "";
-        
+
         GameBoard() {
             setBackground(Color.BLACK);
             setFocusable(true);
@@ -120,7 +118,7 @@ class BrickBreaker extends JFrame {
             }
         }
 
-         void restartGame() {
+        void restartGame() {
             paddle = new Paddle(260, 450);
             ball = new Ball(295, 300);
             createBricks();
@@ -227,7 +225,6 @@ class BrickBreaker extends JFrame {
     }
 
     public static void main(String[] args) {
-        new BrickBreaker();
+        SwingUtilities.invokeLater(() -> new BrickBreaker());
     }
 }
-
